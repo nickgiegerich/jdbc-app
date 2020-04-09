@@ -43,11 +43,36 @@ public class JDBCApp extends Application {
         Statement statement = DBQuery.getStatement(); // Get Statement Reference
         
         // Raw SQL insert statement
-        String insertStatement = "INSERT INTO country(country, createDate, createdBy, lastUpdateBy) "
-                               + "VALUES('USA', '2020-02-22 00:00:00', 'admin', 'admin')";
+//        String insertStatement = "INSERT INTO country(country, createDate, createdBy, lastUpdateBy) "
+//                               + "VALUES('USA', '2020-02-22 00:00:00', 'admin', 'admin')";
+
+//        String countryName = "Canada";
+//        String createDate = "2020-02-22 00:00:00";
+//        String createBy = "admin";
+//        String lastUpdateBy = "admin";
+//        
+//        String insertStatement = "INSERT INTO country(country, createDate, createdBy, lastUpdateBy)" +
+//                                 "VALUES(" +
+//                                 "'" +  countryName + "'," +
+//                                 "'" +  createDate + "'," +
+//                                 "'" +  createBy + "'," +
+//                                 "'" +  lastUpdateBy + "'" +
+//                                 ")";
+
+
+        // Raw update statement
+//        String updateStatement = "UPDATE country SET country = 'Japan' WHERE country = 'Canada'";
+
+
+        // Raw delete statment 
+        String deleteStatement = "DELETE FROM country WHERE country = 'Japan'";
+    
         
+
+
         // Execute SQL Statment
-        statement.execute(insertStatement);
+        statement.execute(deleteStatement);
+        
         
         // Confirm rows affected
         if (statement.getUpdateCount() > 0)  
