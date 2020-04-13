@@ -6,8 +6,12 @@
 package jdbcapp;
 
 import com.mysql.jdbc.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,15 +41,14 @@ public class JDBCApp extends Application {
      */
     public static void main(String[] args) throws SQLException {
         
-        Connection conn = DBConnection.startConnection();
-        
+        Connection conn = DBConnection.startConnection(); // Connect to the database
         DBQuery.setStatement(conn); // Create Statement Objects
         Statement statement = DBQuery.getStatement(); // Get Statement Reference
         
-        // Raw SQL insert statement
+//        // Raw SQL insert statement
 //        String insertStatement = "INSERT INTO country(country, createDate, createdBy, lastUpdateBy) "
 //                               + "VALUES('USA', '2020-02-22 00:00:00', 'admin', 'admin')";
-
+//
 //        String countryName = "Canada";
 //        String createDate = "2020-02-22 00:00:00";
 //        String createBy = "admin";
@@ -58,31 +61,47 @@ public class JDBCApp extends Application {
 //                                 "'" +  createBy + "'," +
 //                                 "'" +  lastUpdateBy + "'" +
 //                                 ")";
-
-
-        // Raw update statement
+//
+//
+//        // Raw update statement
 //        String updateStatement = "UPDATE country SET country = 'Japan' WHERE country = 'Canada'";
+//
+//
+//        // Raw delete statment 
+//        String deleteStatement = "DELETE FROM country WHERE country = 'Japan'";
+//    
+//        
+//
+//
+//        // Execute SQL Statment
+//        statement.execute(deleteStatement);
+//        
+//        
+//        // Confirm rows affected
+//        if (statement.getUpdateCount() > 0)  
+//            System.out.println(statement.getUpdateCount() + "row(s) affected");
+//        else
+//            System.out.println("No Rows Added");
 
-
-        // Raw delete statment 
-        String deleteStatement = "DELETE FROM country WHERE country = 'Japan'";
-    
+        String selectStatement = "SELECT * FROM country"; // SELECT statement
+        statement.execute(selectStatement); // Exevute statement
+        ResultSet rs = statement.getResultSet(); // Get ResultSet
         
-
-
-        // Execute SQL Statment
-        statement.execute(deleteStatement);
-        
-        
-        // Confirm rows affected
-        if (statement.getUpdateCount() > 0)  
-            System.out.println(statement.getUpdateCount() + "row(s) affected");
-        else
-            System.out.println("No Rows Added");
+        // Forward Scroll ResultSet
+        while (rs.next()) { 
+            int countryID = rs.getInt("countryId");
+            String countryName = rs.getString("country");
+            LocalDate date = rs.getDate("createDate").toLocalDate();
+            LocalTime time = rs.getTime("createDate").toLocalTime();
+            String createdBy = rs.getString("createdBy");
+            LocalDateTime lastUpdate = rs.getTimestamp("lastUpdate").toLocalDateTime();
+            
+            // Display record
+            System.out.println(countryID + " | " + countryName + " | " + date + " | " + time + " | " + createdBy + " | " + lastUpdate);
+            
+        }
         
         launch(args);
-        
-        
         DBConnection.closeConnection();
     }
     
